@@ -19,9 +19,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // <html lang="en" className={`${inter.variable} h-full antialiased`}>
-    //   <body className="flex min-h-full flex-col">{children}</body>
-    // </html>
     <html lang="da">
       <body
         suppressHydrationWarning
