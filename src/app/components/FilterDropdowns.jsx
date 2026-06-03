@@ -111,7 +111,6 @@ function DropdownFilter({
   narrow = false,
 }) {
   const count = activeValues.length;
-  const displayLabel = count === 0 ? label : `${label} (${count})`;
   const wrapperRef = useRef(null);
 
   // Delt indhold til begge dropdown-versioner
@@ -145,10 +144,10 @@ function DropdownFilter({
       {count > 0 && (
         <button
           onClick={onClear}
-          className="flex w-full items-center gap-1.5 border-t border-(--grey-100) px-6 py-3 text-left text-sm text-(--grey-400) hover:bg-(--card-background)"
+          className="size-var(--p-size) flex w-full items-center gap-1.5 border-t border-(--grey-100) px-6 py-3 text-left text-(--grey-400) hover:bg-(--card-background)"
         >
-          <IoIosClose size={20} />
-          Ryd filter
+          <IoIosClose size={22} />
+          Ryd filtre
         </button>
       )}
     </>
@@ -159,22 +158,27 @@ function DropdownFilter({
     <div ref={wrapperRef} className="md:relative">
       <button
         onClick={onToggleDropdown}
-        className="flex items-center gap-2 rounded-[20px] border border-(--grey-200) px-4 py-2 transition-colors hover:bg-(--card-background)"
+        className={`relative flex items-center gap-2 rounded-[20px] border px-4 py-2 transition-colors hover:bg-(--card-background) ${count > 0 ? "border-(--button-dark) bg-(--card-background)" : "border-(--grey-200)"}`}
       >
         <span className="font-semibold" style={{ fontSize: "var(--p-size)" }}>
-          {displayLabel}
+          {label}
         </span>
         <IoIosArrowDown
           size={16}
           className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
+        {count > 0 && (
+          <span className="absolute -top-3 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-(--button-dark) text-sm text-[var(--text-secondary)]">
+            {count}
+          </span>
+        )}
       </button>
 
       {isOpen && (
         <>
           {/* Mobil: spænder over fuld container-bredde og placeres under netop denne knap */}
           <div
-            className="absolute left-0 right-0 z-50 md:hidden"
+            className="absolute right-0 left-0 z-50 md:hidden"
             style={{
               top: wrapperRef.current
                 ? wrapperRef.current.offsetTop + wrapperRef.current.offsetHeight
@@ -188,7 +192,9 @@ function DropdownFilter({
 
           {/* Desktop: placeres under denne knap med passende minimumsbredde */}
           <div className="absolute top-full left-0 z-50 hidden md:block">
-            <div className={`mt-2 overflow-hidden rounded-[20px] border border-(--grey-200) bg-(--background-primary) shadow-lg ${narrow ? "md:min-w-48" : "md:min-w-120"}`}>
+            <div
+              className={`mt-2 overflow-hidden rounded-[20px] border border-(--grey-200) bg-(--background-primary) shadow-lg ${narrow ? "md:min-w-48" : "md:min-w-120"}`}
+            >
               {dropdownItems}
             </div>
           </div>
@@ -229,7 +235,8 @@ export default function FilterDropdowns({
   };
 
   // Nulstiller ét filter ved at sende et tomt array for den pågældende nøgle
-  const clearFilter = (filterKey) => pushParams({ ...aktivFiltre, [filterKey]: [] });
+  const clearFilter = (filterKey) =>
+    pushParams({ ...aktivFiltre, [filterKey]: [] });
 
   const dropdowns = [
     {
@@ -280,38 +287,39 @@ export default function FilterDropdowns({
           onClick={() => setOpenDropdown(null)}
         />
       )}
-    <div
-      onPointerLeave={(e) => e.pointerType !== "touch" && setOpenDropdown(null)}
-      className="relative z-50 flex flex-wrap gap-4"
-    >
-      {dropdowns.map((d) => (
-        <DropdownFilter
-          key={d.name}
-          name={d.name}
-          label={d.label}
-          options={d.options}
-          activeValues={aktivFiltre[d.name] ?? []}
-          onToggle={(value) => toggleOption(d.name, value)}
-          onClear={() => clearFilter(d.name)}
-          isOpen={openDropdown === d.name}
-          narrow={d.narrow ?? false}
-          onToggleDropdown={() =>
-            setOpenDropdown(openDropdown === d.name ? null : d.name)
-          }
-        />
-      ))}
+      <div
+        onPointerLeave={(e) =>
+          e.pointerType !== "touch" && setOpenDropdown(null)
+        }
+        className="relative z-50 flex flex-wrap gap-4"
+      >
+        {dropdowns.map((d) => (
+          <DropdownFilter
+            key={d.name}
+            name={d.name}
+            label={d.label}
+            options={d.options}
+            activeValues={aktivFiltre[d.name] ?? []}
+            onToggle={(value) => toggleOption(d.name, value)}
+            onClear={() => clearFilter(d.name)}
+            isOpen={openDropdown === d.name}
+            narrow={d.narrow ?? false}
+            onToggleDropdown={() =>
+              setOpenDropdown(openDropdown === d.name ? null : d.name)
+            }
+          />
+        ))}
 
-      {Object.values(aktivFiltre).some((v) => v.length > 0) && (
-        <button
-          onClick={() => router.push("/rejser")}
-          className="flex items-center gap-1.5 self-center rounded-[20px] px-4 py-2 transition-colors hover:bg-(--card-background)"
-          style={{ fontSize: "var(--tag-size)", color: "var(--grey-300)" }}
-        >
-          <IoIosClose size={20} />
-          Ryd filtre
-        </button>
-      )}
-    </div>
+        {Object.values(aktivFiltre).some((v) => v.length > 0) && (
+          <button
+            onClick={() => router.push("/rejser")}
+            className="flex items-center gap-1.5 self-center rounded-[20px] px-4 py-2 text-(--grey-400) transition-colors hover:bg-(--card-background)"
+          >
+            <IoIosClose size={22} />
+            Ryd filtre
+          </button>
+        )}
+      </div>
     </>
   );
 }
