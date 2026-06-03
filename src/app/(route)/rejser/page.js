@@ -86,7 +86,7 @@ export default async function AlleRejser({ searchParams }) {
         <PageHero
           bgColor="bg-[var(--background-tertiary)]"
           tagline="Hvor skal turen gå hen?"
-          heading="Gå på opdagelse i alle vores cykelrejser"
+          heading="Filtrér blandt vores mange cykelrejser forneden"
           image="/assets/rejseside-hero.webp"
           imageAlt="Cykelrejse"
           className="h-0"
