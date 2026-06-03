@@ -5,9 +5,8 @@ import { Suspense } from "react";
 import PageHero from "@/app/components/PageHero";
 import FilterDropdowns from "@/app/components/FilterDropdowns";
 import { supabase } from "@/lib/supabase";
-import IdPageHeading from "./components/IdPageHeading";
 
-const MAANED_NAVNE = {
+const maanedNavne = {
   1: "Januar",
   2: "Februar",
   3: "Marts",
@@ -22,7 +21,7 @@ const MAANED_NAVNE = {
   12: "December",
 };
 
-const DANSK_MAANED_NR = {
+const maanedNummer = {
   januar: 1,
   februar: 2,
   marts: 3,
@@ -36,19 +35,6 @@ const DANSK_MAANED_NR = {
   november: 11,
   december: 12,
 };
-
-function parseMaanedFraDato(dato) {
-  if (!dato) return null;
-  const num = parseInt(dato);
-  if (!isNaN(num) && num >= 1 && num <= 12) return num;
-  const d = new Date(dato);
-  if (!isNaN(d.getTime())) return d.getMonth() + 1;
-  const lower = String(dato).toLowerCase();
-  for (const [navn, nr] of Object.entries(DANSK_MAANED_NR)) {
-    if (lower.includes(navn)) return nr;
-  }
-  return null;
-}
 
 export default async function AlleRejser({ searchParams }) {
   const params = await searchParams;
@@ -68,25 +54,27 @@ export default async function AlleRejser({ searchParams }) {
     .select("land, antal_dage, tidspunkt");
 
   const lokationer = [
-    ...new Set(filterData?.map((t) => t.land).filter(Boolean)),
+    ...new Set(filterData?.map((rejse) => rejse.land).filter(Boolean)),
   ].sort();
 
   const varigheder = [
     ...new Set(
       filterData
-        ?.map((t) => Number(t.antal_dage))
-        .filter((n) => !isNaN(n) && n > 0),
+        ?.map((rejse) => Number(rejse.antal_dage))
+        .filter((antal) => !isNaN(antal) && antal > 0),
     ),
-  ].sort((a, b) => a - b);
+  ].sort((foerste, anden) => foerste - anden);
 
   const månedSet = new Set();
-  filterData?.forEach((t) => {
-    const nr = parseMaanedFraDato(t.tidspunkt);
-    if (nr) månedSet.add(nr);
+  filterData?.forEach((rejse) => {
+    rejse.tidspunkt?.forEach((maanedNavn) => {
+      const nummer = maanedNummer[maanedNavn];
+      if (nummer) månedSet.add(nummer);
+    });
   });
   const maaneder = [...månedSet]
-    .sort((a, b) => a - b)
-    .map((n) => ({ num: String(n), navn: MAANED_NAVNE[n] }));
+    .sort((foerste, anden) => foerste - anden)
+    .map((nummer) => ({ num: String(nummer), navn: maanedNavne[nummer] }));
 
   return (
     <>
@@ -135,37 +123,39 @@ async function TravelCardContainer({ aktivFiltre }) {
   if (aktivFiltre.varighed.length > 0)
     query = query.in("antal_dage", aktivFiltre.varighed.map(Number));
 
-  const { data: travels, error } = await query.order("id", { ascending: true });
+  const { data: alleRejser, error } = await query.order("id", {
+    ascending: true,
+  });
 
   if (error) {
     return <p>Kunne ikke hente rejser.</p>;
   }
 
-  let filtered = travels ?? [];
+  let filtreretRejser = alleRejser ?? [];
 
   if (aktivFiltre.maaned.length > 0) {
-    const monthNums = aktivFiltre.maaned.map(Number);
-    filtered = filtered.filter((t) => {
-      const nr = parseMaanedFraDato(t.tidspunkt);
-      return nr !== null && monthNums.includes(nr);
-    });
+    filtreretRejser = filtreretRejser.filter((rejse) =>
+      rejse.tidspunkt?.some((maanedNavn) =>
+        aktivFiltre.maaned.includes(String(maanedNummer[maanedNavn])),
+      ),
+    );
   }
 
   return (
     <>
       <div className="col-[content] border-t border-(--grey-200) pt-4">
         <p style={{ fontSize: "var(--tag-size)", color: "var(--grey-300)" }}>
-          {filtered.length} rejser
+          {filtreretRejser.length} rejser
         </p>
       </div>
       <section className="col-[content] grid py-10">
-        {filtered.length === 0 ? (
+        {filtreretRejser.length === 0 ? (
           <h6 className="text-(--grey-400)">
             Ingen rejser matcher dit filter.
           </h6>
         ) : (
           <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] items-stretch gap-8">
-            {filtered.map((rejse) => (
+            {filtreretRejser.map((rejse) => (
               <TravelCard key={rejse.id} rejse={rejse} />
             ))}
           </div>
