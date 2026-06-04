@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import PageHero from "@/app/components/PageHero";
 import FilterDropdowns from "@/app/components/FilterDropdowns";
 import { supabase } from "@/lib/supabase";
+import PageLoader from "@/app/components/PageLoader";
 
 const maanedNavne = {
   1: "Januar",
@@ -101,7 +102,7 @@ export default async function AlleRejser({ searchParams }) {
           />
         </section>
 
-        <Suspense fallback={<p>Indlæser rejser...</p>}>
+        <Suspense fallback={<PageLoader />}>
           <TravelCardContainer aktivFiltre={aktivFiltre} />
         </Suspense>
       </main>

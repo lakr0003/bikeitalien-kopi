@@ -5,6 +5,10 @@ html {
   scroll-behavior: smooth;
 }
 
+body.is-loading main {
+  opacity: 0;
+}
+
 @theme inline {
   --background-primary: var(--background-primary);
   --background-secondary: var(--background-secondary);
