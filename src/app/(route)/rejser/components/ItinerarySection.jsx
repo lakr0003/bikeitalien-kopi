@@ -4,7 +4,6 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-// import { IoIosArrowForward, IoIosArrowBack } from "react-icons/rx";
 import Button from "@/app/components/Button";
 
 export default function RejseDageTimeline({ rejse }) {
@@ -26,26 +25,37 @@ export default function RejseDageTimeline({ rejse }) {
       <div className="grid gap-12 md:grid-cols-2 md:items-center lg:gap-20">
         <div>
           <div className="relative">
-            <div className="custom-scroll h-50 overflow-y-auto pr-4 pb-10 md:h-100">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -40 }}
-                  transition={{ duration: 0.35 }}
-                >
-                  <h4 className="font-semibold">Dag {dag.dag}</h4>
-                  <h5 className="mb-3">{dag.dato || rejse.dato}</h5>
-                  <h6 className="mb-5">{dag.heading}</h6>
-                  <p className="max-w-(--text-max-width) whitespace-pre-line">
-                    {dag.beskrivelse}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={active}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.35 }}
+              >
+                <h4 className="font-semibold">Dag {dag.dag}</h4>
+                <h5 className="mb-3">{dag.dato || rejse.dato}</h5>
+                <h6 className="mb-5">{dag.heading}</h6>
 
-            <div className="from-var(--background-primary) pointer-events-none absolute bottom-0 left-0 h-24 w-full bg-linear-to-t to-transparent" />
+                <div className="relative">
+                  <div className="custom-scroll h-36 overflow-y-auto pr-4 pb-10 md:h-64">
+                    <motion.p
+                      className="max-w-(--text-max-width) whitespace-pre-line"
+                      animate={{ y: [0, -14, 0] }}
+                      transition={{
+                        delay: 0.7,
+                        duration: 0.9,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      {dag.beskrivelse}
+                    </motion.p>
+                  </div>
+
+                  <div className="pointer-events-none absolute bottom-0 left-0 h-20 w-full bg-linear-to-t from-[var(--background-primary)] to-transparent" />
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           <div className="flex gap-3">

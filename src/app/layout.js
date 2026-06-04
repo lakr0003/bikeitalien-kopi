@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import PageLoader from "./components/PageLoader";
 
 // import "./reset.css";
 import "./globals.css";
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${inter.variable} antialiased`}
       >
+        <PageLoader />
         <main className="flex-1">{children}</main>
       </body>
     </html>

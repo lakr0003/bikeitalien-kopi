@@ -3,6 +3,7 @@ import TravelCard from "../TravelCard";
 import { supabase } from "@/lib/supabase";
 import HeadingSection from "../HeadingSection";
 import LinkButton from "../LinkButton";
+import PageLoader from "../PageLoader";
 
 const CardGridSection = () => {
   return (
@@ -24,7 +25,7 @@ const CardGridSection = () => {
             </LinkButton>
           </div>
         </div>
-        <Suspense fallback={<div className="p-4">Loading rejser…</div>}>
+        <Suspense fallback={<PageLoader />}>
           <FetchSelectedTravels />
         </Suspense>
       </div>
