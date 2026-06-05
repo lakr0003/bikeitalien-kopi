@@ -37,8 +37,9 @@ const IndexHero = () => {
             </h1>
             <div className="mx-auto max-w-2xl space-y-4">
               <h6 className="text-(--text-secondary)!">
-                Oplev verden fra sadlen med håndplukkede ruter, stærkt
-                fællesskab og cykelferier ud over det sædvanlige.
+                Oplev verden fra sadlen – uanset om du vil være en del af et
+                stærkt fællesskab på vores grupperejser, eller du vil afsted
+                alene med din egen familie på en skræddersyet, forplanlagt rute.
               </h6>
               <div className="flex justify-center pt-4">
                 <LinkButton
@@ -71,6 +72,8 @@ const IndexHero = () => {
                 alt="Scroll down"
                 width={50}
                 height={50}
+                loading="eager"
+                className="h-auto"
               />
             </motion.div>
           ))}
