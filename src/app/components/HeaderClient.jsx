@@ -126,7 +126,7 @@ const HeaderClient = ({ rejse }) => {
       className={`relative col-[full] grid grid-cols-subgrid${isIndex ? "" : " mb-8"}`}
     >
       <div
-        className="relative col-[content] flex items-center justify-between py-4"
+        className="relative col-[content] flex items-center justify-between py-3"
         onMouseLeave={closeAll}
         style={{
           color: isLight ? "var(--text-secondary)" : "var(--text-primary)",
