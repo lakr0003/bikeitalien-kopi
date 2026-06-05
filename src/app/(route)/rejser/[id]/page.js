@@ -9,7 +9,6 @@ import { IoAirplaneOutline, IoRestaurantOutline } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
 import { PiPersonSimpleBike } from "react-icons/pi";
 import IdPageHeading from "../components/IdPageHeading";
-import Image from "next/image";
 import Gallery from "@/app/components/Gallery";
 import AnchorNav from "../components/AnchorNav";
 import ItinerarySection from "../components/ItinerarySection";
@@ -43,6 +42,7 @@ export default async function RejseDetalje({ params }) {
       </header>
       <main>
         <IdPageHeading rejse={rejse} />
+
         <AnchorNav rejseId={id} />
         <ItinerarySection rejse={rejse} />
         <ImageCardSection rejse={rejse} />

@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+
 import Button from "@/app/components/Button";
 
 export default function RejseDageTimeline({ rejse }) {
@@ -19,6 +18,9 @@ export default function RejseDageTimeline({ rejse }) {
 
   const progress =
     dage.length > 1 ? `${(active / (dage.length - 1)) * 100}%` : "0%";
+
+  //NYYYYT
+  const mapUrl = rejse?.travelMap || [];
 
   return (
     <section className="col-[content] py-16 md:py-24" id="dagsplan">
@@ -60,18 +62,22 @@ export default function RejseDageTimeline({ rejse }) {
 
           <div className="flex gap-3">
             <Button
-              variant="icon"
-              icon={IoIosArrowBack}
+              variant="primary"
+              iconPosition="left"
               onClick={prev}
               aria-label="Forrige dag"
-            />
+            >
+              Forrige dag
+            </Button>
 
             <Button
-              variant="icon"
-              icon={IoIosArrowForward}
+              variant="primary"
+              iconPosition="right"
               onClick={next}
               aria-label="Næste dag"
-            />
+            >
+              Næste dag
+            </Button>
           </div>
 
           <p className="text-var(--grey-400)! mt-4 font-bold md:hidden">
@@ -80,7 +86,7 @@ export default function RejseDageTimeline({ rejse }) {
         </div>
 
         <div className="relative h-125 w-full overflow-hidden rounded-[10px] md:rounded-[20px]">
-          <AnimatePresence mode="wait">
+          {/* <AnimatePresence mode="wait">
             <motion.div
               key={`img-${active}`}
               initial={{ opacity: 0, x: 40 }}
@@ -97,7 +103,17 @@ export default function RejseDageTimeline({ rejse }) {
                 className="object-cover"
               />
             </motion.div>
-          </AnimatePresence>
+          </AnimatePresence> */}
+          <iframe
+            src={mapUrl}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={`Rutekort for ${rejse?.titel || "rejsen"}`}
+          ></iframe>
         </div>
       </div>
 
