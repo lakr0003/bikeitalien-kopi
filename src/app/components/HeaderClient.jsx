@@ -25,15 +25,13 @@ const kategoriId = {
 
 // Kolonner til desktop-dropdown — hver kolonne vises side om side
 const kolonner = [
-  ["Se alle rejser", "Mountainbike", "Landevej"],
-  ["Cykelturisme", "Eventyrrejse"],
-  ["Familieferie", "Gravel"],
+  ["Cykelturisme", "Gravel"],
+  ["Mountainbike", "Familieferie"],
+  ["Eventyrrejse", "Landevej"],
 ];
 
-// Alle kategorier uden "Se alle rejser" — bruges i mobil panel 1
-const kategorier = kolonner
-  .flat()
-  .filter((kategori) => kategori !== "Se alle rejser");
+// Alle kategorier, bruges i mobil panel 1
+const kategorier = kolonner.flat();
 
 const HeaderClient = ({ rejse }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -74,84 +72,47 @@ const HeaderClient = ({ rejse }) => {
   // --- Desktop dropdown: renders kategori-kolonner med rejser under hver ---
   const renderKategorier = (onClose) =>
     kolonner.map((kolonne, index) => (
-      <div key={index} className="flex w-full flex-col gap-4 px-0 md:gap-10.5">
-        {kolonne.map((kategori) => {
-          const alleRejser = kategori === "Se alle rejser";
-          return (
-            <ul
-              key={kategori}
-              className={
-                alleRejser ? "border-b border-(--grey-200) p-1" : "p-1"
-              }
-            >
-              <div
-                className={`flex items-center justify-between rounded-[10px] p-1.5 hover:bg-(--card-background)${alleRejser ? "" : " md:hover:bg-transparent"}`}
+      <div key={index} className="flex w-full flex-col gap-4 px-0 md:gap-8">
+        {kolonne.map((kategori) => (
+          <ul key={kategori} className="">
+            <div className="">
+              <Link
+                href={`/rejser?kategori=${encodeURIComponent(kategori)}`}
+                className="flex items-center justify-between rounded-[10px] px-2 py-1.5 hover:bg-(--card-background)"
+                onClick={onClose}
               >
-                {alleRejser ? (
-                  <Link
-                    href="/rejser"
-                    className="flex-1 font-semibold"
-                    onClick={onClose}
+                <span
+                  className="flex-1 font-semibold"
+                  style={{ fontSize: "var(--p-size)" }}
+                >
+                  {kategori}
+                </span>
+                <IoIosArrowForward color="var(--text-primary)" />
+              </Link>
+            </div>
+            <div className="pt-1 pb-3 pl-1 md:pb-0">
+              {rejse
+                ?.filter((item) => item.kategori === kategori)
+                .map((item) => (
+                  <li
+                    key={item.id}
+                    className="border-t border-(--grey-200) py-1 pl-1"
                   >
-                    <span style={{ fontSize: "var(--p-size)" }}>
-                      {kategori}
-                    </span>
-                  </Link>
-                ) : (
-                  <span
-                    className="flex-1 font-semibold"
-                    style={{ fontSize: "var(--p-size)" }}
-                  >
-                    {kategori}
-                  </span>
-                )}
-                {alleRejser && (
-                  <IoIosArrowForward color="var(--text-primary)" />
-                )}
-              </div>
-              {!alleRejser && (
-                <div className="pt-1 pb-3 pl-1 md:pb-0">
-                  <li className="border-t border-(--grey-200) py-1 pl-1">
                     <Link
-                      href={`/rejser?kategori=${encodeURIComponent(kategori)}`}
+                      href={`/rejser/${kategoriId[item.kategori] ?? item.id}`}
                       className="flex items-center justify-between rounded-[10px] px-2 py-1.5 hover:bg-(--card-background)"
                       onClick={onClose}
                     >
-                      <p
-                        style={{
-                          fontSize: "var(--tag-size)",
-                          fontWeight: "semibold",
-                        }}
-                      >
-                        Se alle
+                      <p style={{ fontSize: "var(--tag-size)" }}>
+                        {item.titel}
                       </p>
                       <IoIosArrowForward color="var(--text-primary)" />
                     </Link>
                   </li>
-                  {rejse
-                    ?.filter((item) => item.kategori === kategori)
-                    .map((item) => (
-                      <li
-                        key={item.id}
-                        className="border-t border-(--grey-200) py-1 pl-1"
-                      >
-                        <Link
-                          href={`/rejser/${kategoriId[item.kategori] ?? item.id}`}
-                          className="flex items-center justify-between rounded-[10px] px-2 py-1.5 hover:bg-(--card-background)"
-                          onClick={onClose}
-                        >
-                          <p style={{ fontSize: "var(--tag-size)" }}>
-                            {item.titel}
-                          </p>
-                          <IoIosArrowForward color="var(--text-primary)" />
-                        </Link>
-                      </li>
-                    ))}
-                </div>
-              )}
-            </ul>
-          );
-        })}
+                ))}
+            </div>
+          </ul>
+        ))}
       </div>
     ));
 
@@ -181,22 +142,23 @@ const HeaderClient = ({ rejse }) => {
 
         {/* Desktop nav */}
         <div className="hidden items-center md:flex">
-          <div className="px-2 md:px-6">
-            <button
-              onMouseEnter={() => setMenuOpen(true)}
-              className="group flex w-fit flex-col items-start px-5 py-2.5"
-            >
-              <span className="-mr-1 inline-flex items-center gap-1">
-                <p className="font-semibold">Alle rejser</p>
-                <ChevronDownIcon
-                  className={`size-6 transition duration-300 ${menuOpen ? "rotate-180" : ""}`}
-                  aria-hidden="true"
+          <div className="px-2 md:px-6" onMouseEnter={() => setMenuOpen(true)}>
+            <div className="group flex w-fit items-center gap-1 px-5 py-2.5">
+              <Link
+                href="/rejser"
+                onClick={closeAll}
+                className="flex flex-col items-start font-semibold"
+              >
+                Alle rejser
+                <div
+                  className={`h-px w-full origin-left rounded-full ${isLight ? "bg-(--text-secondary)" : "bg-(--text-primary)"} transition-transform duration-300 ease-out ${isRejser ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
                 />
-              </span>
-              <div
-                className={`h-px w-full origin-left rounded-full ${isLight ? "bg-(--text-secondary)" : "bg-(--text-primary)"} transition-transform duration-300 ease-out ${isRejser ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+              </Link>
+              <ChevronDownIcon
+                className={`size-6 transition duration-300 ${menuOpen ? "rotate-180" : ""}`}
+                aria-hidden="true"
               />
-            </button>
+            </div>
           </div>
           <div className="px-2 md:px-6">
             <Link
@@ -252,7 +214,7 @@ const HeaderClient = ({ rejse }) => {
             >
               <div className="mt-1.5 overflow-hidden rounded-[20px] bg-(--background-primary) shadow-[0_0_20px_rgba(0,0,0,0.1)]">
                 <div className="p-7">
-                  <div className="flex gap-10.5">
+                  <div className="flex gap-8">
                     {renderKategorier(() => setMenuOpen(false))}
                   </div>
                 </div>
@@ -291,21 +253,29 @@ const HeaderClient = ({ rejse }) => {
                       maxHeight: "calc(100dvh - 70px)",
                     }}
                   >
-                    <button
-                      onClick={() => setMobilePanel(1)}
-                      className="flex w-full items-center justify-between border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                    >
-                      <p
-                        className="font-semibold"
-                        style={{ fontSize: "var(--p-size)" }}
+                    <div className="flex w-full items-center border-b border-(--grey-200)">
+                      <Link
+                        href="/rejser"
+                        className="flex-1 px-5 py-5 hover:bg-(--card-background)"
+                        onClick={closeAll}
                       >
-                        Alle rejser
-                      </p>
-                      <IoIosArrowForward
-                        color="var(--text-primary)"
-                        size={20}
-                      />
-                    </button>
+                        <p
+                          className="font-semibold"
+                          style={{ fontSize: "var(--p-size)" }}
+                        >
+                          Alle rejser
+                        </p>
+                      </Link>
+                      <button
+                        onClick={() => setMobilePanel(1)}
+                        className="self-stretch border-l border-(--grey-200) px-5 hover:bg-(--card-background)"
+                      >
+                        <IoIosArrowForward
+                          color="var(--text-primary)"
+                          size={20}
+                        />
+                      </button>
+                    </div>
                     <Link
                       href="/om"
                       className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
@@ -340,45 +310,56 @@ const HeaderClient = ({ rejse }) => {
                       maxHeight: "calc(100dvh - 70px)",
                     }}
                   >
-                    <button
-                      onClick={() => setMobilePanel(0)}
-                      className="flex w-full items-center gap-2 border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                    >
-                      <IoIosArrowBack color="var(--text-primary)" size={20} />
-                      <span
-                        className="font-semibold"
-                        style={{ fontSize: "var(--p-size)" }}
-                      >
-                        Gå tilbage til oversigten
-                      </span>
-                    </button>
-                    <Link
-                      href="/rejser"
-                      className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                      onClick={closeAll}
-                    >
-                      <p
-                        className="font-semibold"
-                        style={{ fontSize: "var(--p-size)" }}
-                      >
-                        Se alle rejser
-                      </p>
-                    </Link>
-                    {kategorier.map((kategori) => (
+                    <div className="flex w-full items-center border-b border-(--grey-200)">
                       <button
-                        key={kategori}
-                        onClick={() => {
-                          setSelectedKategori(kategori);
-                          setMobilePanel(2);
-                        }}
-                        className="flex w-full items-center justify-between border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
+                        onClick={() => setMobilePanel(0)}
+                        className="self-stretch px-5 hover:bg-(--card-background)"
                       >
-                        <p style={{ fontSize: "var(--p-size)" }}>{kategori}</p>
-                        <IoIosArrowForward
-                          color="var(--text-primary)"
-                          size={20}
-                        />
+                        <IoIosArrowBack color="var(--text-primary)" size={20} />
                       </button>
+                      <Link
+                        href="/rejser"
+                        className="flex-1 border-l border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
+                        onClick={closeAll}
+                      >
+                        <p
+                          className="font-semibold"
+                          style={{ fontSize: "var(--p-size)" }}
+                        >
+                          Alle rejser
+                        </p>
+                      </Link>
+                    </div>
+                    {kategorier.map((kategori) => (
+                      <div
+                        key={kategori}
+                        className="flex w-full items-center border-b border-(--grey-200)"
+                      >
+                        <Link
+                          href={`/rejser?kategori=${encodeURIComponent(kategori)}`}
+                          className="flex-1 px-5 py-5 hover:bg-(--card-background)"
+                          onClick={closeAll}
+                        >
+                          <p
+                            className="font-semibold"
+                            style={{ fontSize: "var(--p-size)" }}
+                          >
+                            {kategori}
+                          </p>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            setSelectedKategori(kategori);
+                            setMobilePanel(2);
+                          }}
+                          className="self-stretch border-l border-(--grey-200) px-5 hover:bg-(--card-background)"
+                        >
+                          <IoIosArrowForward
+                            color="var(--text-primary)"
+                            size={20}
+                          />
+                        </button>
+                      </div>
                     ))}
                   </div>
 
@@ -390,30 +371,26 @@ const HeaderClient = ({ rejse }) => {
                       maxHeight: "calc(100dvh - 70px)",
                     }}
                   >
-                    <button
-                      onClick={() => setMobilePanel(1)}
-                      className="flex w-full items-center gap-2 border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                    >
-                      <IoIosArrowBack color="var(--text-primary)" size={20} />
-                      <span
-                        className="font-semibold"
-                        style={{ fontSize: "var(--p-size)" }}
+                    <div className="flex w-full items-center border-b border-(--grey-200)">
+                      <button
+                        onClick={() => setMobilePanel(1)}
+                        className="self-stretch px-5 hover:bg-(--card-background)"
                       >
-                        Gå tilbage til kategorierne
-                      </span>
-                    </button>
-                    <Link
-                      href={`/rejser?kategori=${encodeURIComponent(selectedKategori ?? "")}`}
-                      className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                      onClick={closeAll}
-                    >
-                      <p
-                        className="font-semibold"
-                        style={{ fontSize: "var(--p-size)" }}
+                        <IoIosArrowBack color="var(--text-primary)" size={20} />
+                      </button>
+                      <Link
+                        href={`/rejser?kategori=${encodeURIComponent(selectedKategori ?? "")}`}
+                        className="flex-1 border-l border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
+                        onClick={closeAll}
                       >
-                        Se alle rejser i kategorien, {selectedKategori}
-                      </p>
-                    </Link>
+                        <p
+                          className="font-semibold"
+                          style={{ fontSize: "var(--p-size)" }}
+                        >
+                          {selectedKategori}
+                        </p>
+                      </Link>
+                    </div>
                     {rejse
                       ?.filter((item) => item.kategori === selectedKategori)
                       .slice(0, 5)
