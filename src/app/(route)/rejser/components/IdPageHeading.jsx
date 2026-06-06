@@ -20,7 +20,7 @@ const IdPageHeading = ({ rejse }) => {
             width={1200}
             height={800}
             alt={rejse.titel}
-            className="aspect-video h-[41ch] rounded-[20px] object-cover md:rounded-tl-[20px] md:rounded-tr-none md:rounded-br-none md:rounded-bl-[20px]"
+            className="aspect-video rounded-[20px] object-cover md:h-[41ch] md:rounded-tl-[20px] md:rounded-tr-none md:rounded-br-none md:rounded-bl-[20px]"
           />
           <div className="grid grid-cols-2 grid-rows-2 gap-2">
             {remainingImages.map((img) => (
@@ -30,7 +30,7 @@ const IdPageHeading = ({ rejse }) => {
                 width={600}
                 height={400}
                 alt={rejse.titel}
-                className={`h-[20ch] rounded-[20px] object-cover ${img.id === "3" ? "md:rounded-tl-none md:rounded-tr-[20px] md:rounded-br-none md:rounded-bl-none" : ""} ${img.id === "4" ? "md:rounded-none" : ""} ${img.id === "2" ? "md:rounded-none" : ""} ${img.id === "5" ? "md:rounded-tl-none md:rounded-tr-none md:rounded-br-[20px] md:rounded-bl-none" : ""} `}
+                className={`aspect-video rounded-[20px] object-cover md:h-[20ch] ${img.id === "3" ? "md:rounded-tl-none md:rounded-tr-[20px] md:rounded-br-none md:rounded-bl-none" : ""} ${img.id === "4" ? "md:rounded-none" : ""} ${img.id === "2" ? "md:rounded-none" : ""} ${img.id === "5" ? "md:rounded-tl-none md:rounded-tr-none md:rounded-br-[20px] md:rounded-bl-none" : ""} `}
               />
             ))}
           </div>
@@ -61,7 +61,7 @@ const IdPageHeading = ({ rejse }) => {
         <hr className="h-px border-0 bg-[var(--grey-100)]" />
       </div>
 
-      <div className="items-top mt-10 flex flex-col gap-10 md:flex-row">
+      <div className="items-top mt-10 flex flex-col gap-10 lg:flex-row">
         <div className="col-start-1 col-end-3 grid max-w-[80ch] gap-5">
           <h2 className="w-full font-semibold">{rejse.titel}</h2>
           <p className="whitespace-pre-line">{rejse.beskrivelse}</p>

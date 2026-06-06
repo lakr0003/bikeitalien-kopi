@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { IoIosArrowForward } from "react-icons/io";
@@ -6,6 +7,8 @@ const CategoryCard = ({ href, src, alt, label, description }) => {
   return (
     <Link
       href={href}
+      scroll={false}
+      onClick={() => window.scrollTo(0, 0)}
       className="group flex flex-col overflow-hidden rounded-[20px] bg-(--background-primary) shadow-md"
     >
       <div className="flex flex-col gap-3 p-5">

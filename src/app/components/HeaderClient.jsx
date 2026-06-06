@@ -69,6 +69,13 @@ const HeaderClient = ({ rejse }) => {
   useMotionValueEvent(scrollY, "change", (value) => setScrolled(value > 10));
   const isLight = isIndex && !scrolled;
 
+  const closeAndScrollTop = (onClose) => {
+    onClose();
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    document.documentElement.style.scrollBehavior = "";
+  };
+
   // --- Desktop dropdown: renders kategori-kolonner med rejser under hver ---
   const renderKategorier = (onClose) =>
     kolonner.map((kolonne, index) => (
@@ -78,8 +85,9 @@ const HeaderClient = ({ rejse }) => {
             <div className="">
               <Link
                 href={`/rejser?kategori=${encodeURIComponent(kategori)}`}
+                scroll={false}
                 className="flex items-center justify-between rounded-[10px] px-2 py-1.5 hover:bg-(--card-background)"
-                onClick={onClose}
+                onClick={() => closeAndScrollTop(onClose)}
               >
                 <span
                   className="flex-1 font-semibold"
@@ -100,8 +108,9 @@ const HeaderClient = ({ rejse }) => {
                   >
                     <Link
                       href={`/rejser/${kategoriId[item.kategori] ?? item.id}`}
+                      scroll={false}
                       className="flex items-center justify-between rounded-[10px] px-2 py-1.5 hover:bg-(--card-background)"
-                      onClick={onClose}
+                      onClick={() => closeAndScrollTop(onClose)}
                     >
                       <p style={{ fontSize: "var(--tag-size)" }}>
                         {item.titel}
@@ -133,7 +142,7 @@ const HeaderClient = ({ rejse }) => {
           transition: "color 0.3s ease",
         }}
       >
-        <Link href="/">
+        <Link href="/" onClick={() => closeAndScrollTop(closeAll)}>
           <h5>
             <span className="font-semibold">Bike</span>
             <span className="font italic">Italien</span>
@@ -146,7 +155,8 @@ const HeaderClient = ({ rejse }) => {
             <div className="group flex w-fit items-center gap-1 px-5 py-2.5">
               <Link
                 href="/rejser"
-                onClick={closeAll}
+                scroll={false}
+                onClick={() => closeAndScrollTop(closeAll)}
                 className="flex flex-col items-start font-semibold"
               >
                 Alle rejser
@@ -163,9 +173,10 @@ const HeaderClient = ({ rejse }) => {
           <div className="px-2 md:px-6">
             <Link
               href="/om"
+              scroll={false}
               className="group flex flex-col items-start px-5 py-2.5"
               onMouseEnter={() => setMenuOpen(false)}
-              onClick={closeAll}
+              onClick={() => closeAndScrollTop(closeAll)}
             >
               <p className="font-semibold">Om BikeItalien</p>
               <div
@@ -176,9 +187,10 @@ const HeaderClient = ({ rejse }) => {
           <div className="pl-2 md:pl-6">
             <Link
               href="/kontakt"
+              scroll={false}
               className="group flex flex-col items-start px-5 py-2.5"
               onMouseEnter={() => setMenuOpen(false)}
-              onClick={closeAll}
+              onClick={() => closeAndScrollTop(closeAll)}
             >
               <p className="font-semibold">Kontakt</p>
               <div
@@ -256,8 +268,9 @@ const HeaderClient = ({ rejse }) => {
                     <div className="flex w-full items-center border-b border-(--grey-200)">
                       <Link
                         href="/rejser"
+                        scroll={false}
                         className="flex-1 px-5 py-5 hover:bg-(--card-background)"
-                        onClick={closeAll}
+                        onClick={() => closeAndScrollTop(closeAll)}
                       >
                         <p
                           className="font-semibold"
@@ -278,8 +291,9 @@ const HeaderClient = ({ rejse }) => {
                     </div>
                     <Link
                       href="/om"
+                      scroll={false}
                       className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                      onClick={closeAll}
+                      onClick={() => closeAndScrollTop(closeAll)}
                     >
                       <p
                         className="font-semibold"
@@ -290,8 +304,9 @@ const HeaderClient = ({ rejse }) => {
                     </Link>
                     <Link
                       href="/kontakt"
+                      scroll={false}
                       className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                      onClick={closeAll}
+                      onClick={() => closeAndScrollTop(closeAll)}
                     >
                       <p
                         className="font-semibold"
@@ -319,8 +334,9 @@ const HeaderClient = ({ rejse }) => {
                       </button>
                       <Link
                         href="/rejser"
+                        scroll={false}
                         className="flex-1 border-l border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                        onClick={closeAll}
+                        onClick={() => closeAndScrollTop(closeAll)}
                       >
                         <p
                           className="font-semibold"
@@ -337,8 +353,9 @@ const HeaderClient = ({ rejse }) => {
                       >
                         <Link
                           href={`/rejser?kategori=${encodeURIComponent(kategori)}`}
+                          scroll={false}
                           className="flex-1 px-5 py-5 hover:bg-(--card-background)"
-                          onClick={closeAll}
+                          onClick={() => closeAndScrollTop(closeAll)}
                         >
                           <p
                             className="font-semibold"
@@ -380,8 +397,9 @@ const HeaderClient = ({ rejse }) => {
                       </button>
                       <Link
                         href={`/rejser?kategori=${encodeURIComponent(selectedKategori ?? "")}`}
+                        scroll={false}
                         className="flex-1 border-l border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                        onClick={closeAll}
+                        onClick={() => closeAndScrollTop(closeAll)}
                       >
                         <p
                           className="font-semibold"
@@ -398,8 +416,9 @@ const HeaderClient = ({ rejse }) => {
                         <Link
                           key={item.id}
                           href={`/rejser/${kategoriId[item.kategori] ?? item.id}`}
+                          scroll={false}
                           className="flex items-center border-b border-(--grey-200) px-5 py-5 hover:bg-(--card-background)"
-                          onClick={closeAll}
+                          onClick={() => closeAndScrollTop(closeAll)}
                         >
                           <p style={{ fontSize: "var(--p-size)" }}>
                             {item.titel}
