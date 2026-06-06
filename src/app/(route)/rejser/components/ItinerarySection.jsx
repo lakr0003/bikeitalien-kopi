@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
+import Image from "next/image";
 import Button from "@/app/components/Button";
 
 export default function RejseDageTimeline({ rejse }) {
@@ -54,7 +54,7 @@ export default function RejseDageTimeline({ rejse }) {
                     </motion.p>
                   </div>
 
-                  <div className="pointer-events-none absolute bottom-0 left-0 h-20 w-full bg-linear-to-t from-[var(--background-primary)] to-transparent" />
+                  <div className="pointer-events-none absolute bottom-0 left-0 h-20 w-full bg-linear-to-t from-(--background-primary) to-transparent" />
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -118,17 +118,18 @@ export default function RejseDageTimeline({ rejse }) {
       </div>
 
       <div className="relative mt-16 hidden md:block">
-        <div className="absolute top-[7px] h-[3px] w-full bg-[var(--grey-100)]" />
+        <div className="absolute top-1.75 h-0.75 w-full bg-(--grey-100)" />
 
         <motion.div
           animate={{ width: progress }}
           transition={{ duration: 0.35 }}
-          className="absolute top-[7px] z-10 h-[3px] bg-[var(--text-primary)]"
+          className="absolute top-1.75 z-10 h-0.75 bg-(--text-primary)"
         />
 
         <div className="flex justify-between">
           {dage.map((item, index) => {
             const done = index <= active;
+            const isActive = index === active;
 
             return (
               <button
@@ -136,6 +137,24 @@ export default function RejseDageTimeline({ rejse }) {
                 onClick={() => setActive(index)}
                 className="z-20 flex flex-col items-center gap-3"
               >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeBike" //deler animation med de andre cykler, så det ligner den samme der flytter sig
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="pointer-events-none absolute -top-9 z-30 flex items-center justify-center"
+                  >
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full border border-(--grey-100) bg-(--background-primary) shadow-sm">
+                      <Image
+                        src="/assets/bike_icon.webp"
+                        alt="Cykel-indikator"
+                        width={28}
+                        height={28}
+                        className="rounded-full object-contain"
+                      />
+                    </div>
+                  </motion.div>
+                )}
+
                 <motion.div
                   animate={{
                     backgroundColor: done
@@ -143,7 +162,7 @@ export default function RejseDageTimeline({ rejse }) {
                       : "var(--grey-300)",
                     scale: index === active ? 1.1 : 1,
                   }}
-                  className="h-[15px] w-[15px] cursor-pointer rounded-full"
+                  className="h-3.75 w-3.75 cursor-pointer overflow-hidden rounded-full"
                   style={{
                     boxShadow: "0 0 0 8px var(--background-primary)",
                   }}
@@ -151,9 +170,7 @@ export default function RejseDageTimeline({ rejse }) {
 
                 <span
                   className={`font-bold whitespace-nowrap ${
-                    done
-                      ? "text-[var(--text-primary)]"
-                      : "text-[var(--grey-300)]"
+                    done ? "text-(--text-primary)" : "text-(--grey-300)"
                   } `}
                 >
                   Dag {item.dag}
