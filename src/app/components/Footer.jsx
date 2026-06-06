@@ -1,5 +1,7 @@
+"use client";
 import Newsletter from "./Newsletter";
 import Link from "./Link";
+import NextLink from "next/link";
 import { FaSquareFacebook } from "react-icons/fa6";
 import { BsInstagram } from "react-icons/bs";
 
@@ -11,10 +13,12 @@ const Footer = () => {
       <div className="col-[content] mb-13 grid gap-10 text-(--text-secondary) lg:grid-cols-[2fr_1fr]">
         <div>
           <div className="flex flex-col gap-10">
-            <h5 className="text-(--text-secondary)!">
-              <span className="font-semibold">Bike</span>
-              <span className="font italic">Italien</span>
-            </h5>
+            <NextLink href="/" onClick={() => window.scrollTo(0, 0)}>
+              <h5 className="text-(--text-secondary)!">
+                <span className="font-semibold">Bike</span>
+                <span className="font italic">Italien</span>
+              </h5>
+            </NextLink>
             <div className="flex flex-col gap-3">
               <p className="font-semibold">Adresse:</p>
               <Link

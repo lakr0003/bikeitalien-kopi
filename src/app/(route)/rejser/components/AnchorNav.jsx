@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import LinkButton from "@/app/components/LinkButton";
 
@@ -15,9 +15,7 @@ const links = [
 ];
 
 const AnchorNav = ({ rejseId }) => {
-  const [active, setActive] = useState("overview");
-  const buttonRefs = useRef({});
-  const scrollTimer = useRef(null);
+  const [active, setActive] = useState(null);
 
   useEffect(() => {
     const sections = links
@@ -43,17 +41,6 @@ const AnchorNav = ({ rejseId }) => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    clearTimeout(scrollTimer.current);
-    scrollTimer.current = setTimeout(() => {
-      buttonRefs.current[active]?.scrollIntoView({
-        behavior: "smooth",
-        inline: "start",
-        block: "nearest",
-      });
-    }, 180);
-  }, [active]);
-
   const handleClick = (href) => {
     setActive(href);
 
@@ -71,7 +58,6 @@ const AnchorNav = ({ rejseId }) => {
           return (
             <button
               key={link.href}
-              ref={(el) => (buttonRefs.current[link.href] = el)}
               onClick={() => handleClick(link.href)}
               className={`relative cursor-pointer text-[16px] font-medium whitespace-nowrap transition-colors md:px-4 md:text-[16px] ${
                 isActive

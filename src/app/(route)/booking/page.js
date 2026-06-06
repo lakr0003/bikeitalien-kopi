@@ -24,7 +24,7 @@ export default async function BookingSide({ searchParams }) {
         <Header />
       </header>
       <main className="grid">
-        <section className="col-[content] flex flex-col gap-8 py-12 md:grid md:grid-cols-2 md:flex-row md:gap-16 md:py-16">
+        <section className="col-[content] flex flex-col gap-8 pb-12 md:grid md:grid-cols-2 md:flex-row md:gap-16 md:pb-16">
           <div className="relative h-70 overflow-hidden rounded-[20px] md:order-1 md:h-full">
             <Image
               src="/assets/bjergsafaribrentadol.webp"

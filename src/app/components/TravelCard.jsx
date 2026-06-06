@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import Button from "./Button";
@@ -14,7 +15,7 @@ const KATEGORI_ID = {
 const TravelCard = ({ rejse, isPopular }) => {
   const destId = KATEGORI_ID[rejse.kategori] ?? rejse.id;
   return (
-    <Link href={`/rejser/${destId}`} className="h-full">
+    <Link href={`/rejser/${destId}`} scroll={false} onClick={() => window.scrollTo(0, 0)} className="h-full">
       <article className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-(--grey-100) bg-(--card-background) shadow-(--card-background) hover:shadow-md">
         <div className="grid overflow-hidden">
           <Image
