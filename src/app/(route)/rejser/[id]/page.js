@@ -13,10 +13,10 @@ import Gallery from "@/app/components/Gallery";
 import AnchorNav from "../components/AnchorNav";
 import ItinerarySection from "../components/ItinerarySection";
 import Faq from "@/app/components/Faq";
+import LinkButton from "@/app/components/LinkButton";
 
 export default async function RejseDetalje({ params }) {
   const { id } = await params;
-
   const { data: rejse, error } = await supabase
     .from("cykelrejser")
     .select("*")
@@ -24,7 +24,21 @@ export default async function RejseDetalje({ params }) {
     .single();
 
   if (error) {
-    return <p>Rejsen blev ikke fundet.</p>;
+    return (
+      <section className="col-[full] grid min-h-screen place-items-center">
+        <div className="grid justify-items-center">
+          <h2>Øv, rejsen kunne ikke findes...</h2>
+
+          <p className="mt-4">
+            Rejsen er muligvis blevet fjernet eller flyttet.
+          </p>
+
+          <LinkButton variant="primary" href="/rejser" className="mt-6">
+            Se flere rejser
+          </LinkButton>
+        </div>
+      </section>
+    );
   }
 
   const faqItems = rejse.faq || [];
@@ -34,6 +48,7 @@ export default async function RejseDetalje({ params }) {
     src,
     alt: `${rejse.title} billede ${index + 1}`,
   }));
+  
 
   return (
     <>
@@ -62,6 +77,8 @@ export default async function RejseDetalje({ params }) {
         />
 
         <Testimonials testimonials={rejse.testimonials} />
+    
+      
         <Gallery images={galleryImages} />
         <Faq items={faqItems} />
         <ContactSection />

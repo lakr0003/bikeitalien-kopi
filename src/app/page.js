@@ -10,6 +10,7 @@ import ProcessSection from "./components/index/ProcessSection";
 import AboutSection from "./components/index/AboutSection";
 import IndexHero from "./components/index/IndexHero";
 import { supabase } from "@/lib/supabase";
+import PageLoader from "./components/PageLoader";
 
 export default async function Home() {
   const { data, error } = await supabase.from("faq").select("*");
@@ -37,6 +38,7 @@ export default async function Home() {
       </header>
 
       <main className="top-0 col-[full] grid">
+        <PageLoader />
         <IndexHero />
         <TextRevealSection />
         <CategoryGridSection />
