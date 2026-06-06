@@ -9,7 +9,7 @@ const CategoryCard = ({ href, src, alt, label, description }) => {
       href={href}
       scroll={false}
       onClick={() => window.scrollTo(0, 0)}
-      className="group flex flex-col overflow-hidden rounded-[20px] bg-(--background-primary) shadow-md"
+      className="group flex flex-col overflow-hidden rounded-[20px] bg-(--card-background) shadow-md"
     >
       <div className="flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">

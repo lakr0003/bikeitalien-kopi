@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className={`${inter.variable} antialiased`}
       >
-        <PageLoader />
+        {/* <PageLoader /> */}
         <main className="flex-1">{children}</main>
       </body>
     </html>
