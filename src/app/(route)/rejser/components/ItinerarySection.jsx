@@ -141,15 +141,15 @@ export default function RejseDageTimeline({ rejse }) {
                   <motion.div
                     layoutId="activeBike" //deler animation med de andre cykler, så det ligner den samme der flytter sig
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    className="pointer-events-none absolute -top-9 z-30 flex items-center justify-center"
+                    className="pointer-events-none absolute -top-11 z-30 flex items-center justify-center"
                   >
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full border border-(--grey-100) bg-(--background-primary) shadow-sm">
+                    <div className="flex h-10 w-10 items-center justify-center bg-transparent">
                       <Image
-                        src="/assets/bike_icon.webp"
+                        src="/assets/bike-icon.webp"
                         alt="Cykel-indikator"
-                        width={28}
-                        height={28}
-                        className="rounded-full object-contain"
+                        width={40}
+                        height={40}
+                        className="object-contain"
                       />
                     </div>
                   </motion.div>
