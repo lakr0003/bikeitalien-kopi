@@ -144,14 +144,14 @@ async function TravelCardContainer({ aktivFiltre }) {
 
   return (
     <>
-      <div className="col-[content] border-t border-(--grey-200) pt-4">
-        <p style={{ fontSize: "var(--tag-size)", color: "var(--grey-300)" }}>
-          {filtreretRejser.length} rejser
+      <div className="col-[content] border-t border-(--grey-200)! pt-3">
+        <p className="text-(--grey-300)!">
+          {filtreretRejser.length} af 22 rejser
         </p>
       </div>
       <section className="col-[content] grid py-10">
         {filtreretRejser.length === 0 ? (
-          <h6 className="text-(--grey-400)">
+          <h6 className="text-(--grey-400)!">
             Ingen rejser matcher dit filter.
           </h6>
         ) : (

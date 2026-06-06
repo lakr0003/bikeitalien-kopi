@@ -77,12 +77,17 @@ const Footer = () => {
             {[
               "Cykelturisme",
               "Mountainbike",
-              "Familieferier",
+              "Familieferie",
               "Landevej",
-              "Eventyrrejser",
+              "Eventyrrejse",
               "Gravel",
             ].map((item) => (
-              <Link key={item} href="/rejser" color="light" variant="small">
+              <Link
+                key={item}
+                href={`/rejser?kategori=${encodeURIComponent(item)}`}
+                color="light"
+                variant="small"
+              >
                 {item}
               </Link>
             ))}
