@@ -42,7 +42,7 @@ export default function RejseDageTimeline({ rejse }) {
                 <div className="relative">
                   <div className="custom-scroll h-36 overflow-y-auto pr-4 pb-10 md:h-64">
                     <motion.p
-                      className="max-w-(--text-max-width) whitespace-pre-line"
+                      className="whitespace-pre-line"
                       animate={{ y: [0, -14, 0] }}
                       transition={{
                         delay: 0.7,
@@ -60,7 +60,7 @@ export default function RejseDageTimeline({ rejse }) {
             </AnimatePresence>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 md_mt-8">
             <Button
               variant="primary"
               iconPosition="left"
