@@ -38,7 +38,6 @@ export default async function Home() {
       </header>
 
       <main className="top-0 col-[full] grid">
-        <PageLoader />
         <IndexHero />
         <TextRevealSection />
         <CategoryGridSection />
