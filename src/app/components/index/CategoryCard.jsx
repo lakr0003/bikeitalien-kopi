@@ -11,7 +11,7 @@ const CategoryCard = ({ href, src, alt, label, description }) => {
       onClick={() => window.scrollTo(0, 0)}
       className="group flex flex-col overflow-hidden rounded-[20px] bg-(--card-background) shadow-md"
     >
-      <div className="flex flex-col gap-3 p-5">
+      <div className="flex flex-1 flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
           <h6 className="font-bold transition-transform duration-200 group-hover:-translate-x-1">
             {label}
